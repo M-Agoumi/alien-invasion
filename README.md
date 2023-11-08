@@ -1,14 +1,12 @@
 # alien-invasion
 a simple(2D) Python game using Pygame, spaceships war
 
-to run you will need Python and Pygame installed
+to run you will need Python, Pygame and Pyaml installed
 
 
-```pip install pygame```
-
+```pip install pygame pyyaml``` 
 or
-
-```sudo apt install python-pygame```
+```sudo apt install python3-pygame python3-pyyaml```
 
 then
 
