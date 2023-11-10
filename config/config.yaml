@@ -4,7 +4,7 @@ game_window:
   screen: [1200, 800]
 
 bullet:
-  speed_factor: 8
+  speed_factor: 4
   width: 3
   height: 15
   color: [200, 200, 200]
