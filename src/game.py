@@ -1,8 +1,10 @@
 import pygame
 from pygame.sprite import Group
 from src.setting import Setting
-from src.ship import Ship
+from src.sf_ship import SFship
 from src.event import Event
+from src.alien import Alien
+from src.music import Music
 
 class Game():
     # class game, game container
@@ -16,22 +18,23 @@ class Game():
 
     
     def run(self):
-        (ship, event, bullets, clock) = self.init_ojbects()       
+        (ship, event, bullets, clock, aliens, music) = self.init_ojbects()       
 
         # Start the main loop for the game.
         while True:
-            clock.tick(80)  # Limit the frame rate to 60 frames per second
+            clock.tick(165)  # Limit the frame rate to 165 FPS (my monitor refresh rate)
             # Watch for keyboard and mouse events.
             event.check_events(ship, bullets)
 
             # Redraw the screen during each pass through the loop.
-            self.update_screen(ship, bullets)
+            self.update_screen(ship, bullets, aliens)
 
-            # update ship
+            # update ships
             ship.update()
+            aliens.update() # TODO: free out of screen ships / generate more ships
 
             # update bullets
-            self.update_bullets(bullets)
+            self.update_bullets(bullets,aliens)
 
             # draw game score, and lives..
             self.setting.draw_game_info()
@@ -45,8 +48,11 @@ class Game():
 
     def init_ojbects(self):
         # Make a ship.
-        ship = Ship(self.setting.screen, self.setting.game)
-        event = Event(pygame, self.setting)
+        ship = SFship(self.setting)
+
+        #music class init
+        music = Music(self.setting)
+        event = Event(pygame, self.setting, music)
 
         # Make a group to store bullets in.
         bullets = Group()
@@ -54,25 +60,45 @@ class Game():
         # start the clock for the game
         clock = pygame.time.Clock()
 
-        return (ship, event, bullets, clock)
+        # create an alien
+        aliens = Group()
+        alien = Alien(self.setting, bullets)
+        aliens.add(alien)
+
+        return (ship, event, bullets, clock, aliens, music)
     
 
-    def update_screen(self, ship, bullets):
+    def update_screen(self, ship, bullets, aliens):
         # update game screen
         self.setting.fill()
-        ship.blitme()
+        ship.draw()
         for bullet in bullets.sprites():
             bullet.draw_bullet()
+        
+        for alien in aliens.sprites():
+            alien.draw()
 
 
-    def update_bullets(self, bullets):
+    def update_bullets(self, bullets, aliens):
         """Update position of bullets and get rid of old bullets."""
         # Update bullet positions.
         bullets.update()
         # Get rid of bullets that have disappeared.
         for bullet in bullets.copy():
-            if bullet.rect.bottom <= 0:
+            if bullet.rect.bottom <= 0 or bullet.rect.top >= self.setting.getScreenY():
                 bullets.remove(bullet)
+        
+        # get all collisions
+        collisions = pygame.sprite.groupcollide(bullets, aliens, False, False)
+        # check if the collision is friendly or not
+        for bullet, collided_aliens in collisions.items():
+            # Call the 'is_friendly' method on the Bullet object
+            if (bullet.is_friendly()):
+                self.setting.game_score += 100
+                aliens.remove(collided_aliens)
+                aliens.add(Alien(self.setting, bullets))
+                        
+
 
     def calculate_fps(self, clock):
         # Calculate FPS
@@ -81,4 +107,3 @@ class Game():
 
         # Draw FPS text on the screen
         self.setting.screen.blit(fps_text, (self.setting.getScreenX() - 40, 10))
-        

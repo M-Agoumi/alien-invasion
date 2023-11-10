@@ -39,6 +39,7 @@ class Setting():
         self.star  = game.transform.scale(star, (25, 25))
         self.rect  = self.star.get_rect()
         self.stars = []
+        self.game_score = 0
 
 
     def getScreenX(self):
@@ -70,7 +71,7 @@ class Setting():
         if (self.stars):
             # we already have created the list let's move the stars and display them
             for i, (x, y) in enumerate(self.stars):
-                self.stars[i] = (x, y + 1)
+                self.stars[i] = (x, y + 1) # TODO: change to be relative to the speed of the ship
                 if (y > self.getScreenY()):
                     self.stars[i] = (random.randint(0, self.getScreenX()), -20)
                 self.screen.blit(self.star, (x, y))
@@ -90,7 +91,7 @@ class Setting():
     def draw_game_info(self):
         # draw score
         self.screen.blit(self.score, (10, 10))
-        score = self.game.font.Font(None, 25).render(f"{120:.0f}", True, [250,250,250])
+        score = self.game.font.Font(None, 25).render(f"{self.game_score:.0f}", True, [250,250,250])
 
         # Draw FPS text on the screen
         self.screen.blit(score, (40, 18))

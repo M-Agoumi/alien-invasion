@@ -4,9 +4,10 @@ from src.bullet import Bullet
 class Event():
     # Handle game events (keyboard and mouse clicks)
 
-    def __init__(self, game, setting):
+    def __init__(self, game, setting, music):
         self.game = game
         self.setting = setting
+        self.music = music
 
     def check_events(self, ship, bullets):
         for event in self.game.event.get():
@@ -29,7 +30,7 @@ class Event():
             ship.moving_left = True
         elif event.key == self.game.K_SPACE:
             self.fire_bullet(bullets, ship)
-        elif event.key == 113:
+        elif event.key == self.game.K_q:
             sys.exit()
     
 
@@ -41,6 +42,9 @@ class Event():
 
     
     def fire_bullet(self, bullets, ship):
+        # TODO: enemy bullets are counted in the limit fix that :)
+        # TODO: play sound
         if len(bullets) < self.setting.bullet_allowed:
                 new_bullet = Bullet(self.setting, self.setting.screen, ship)
                 bullets.add(new_bullet)
+                self.music.shot_lazer()
