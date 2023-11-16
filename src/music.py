@@ -4,11 +4,22 @@ class Music():
 
     def __init__(self, setting):
         self.setting = setting
+        background_music = self.setting.game.mixer.Sound('resources/sounds/moonlightsonataspace.ogg')
+        background_music.set_volume(0.5)
+        # Start playing the background music on loop
+        background_music.play(-1)
+
+        self.lazer = self.setting.game.mixer.Sound("resources/sounds/laser_shot_sound_lazer.wav")
+        self.lazer.set_volume(0.20)
+
+        self.explosion = self.setting.game.mixer.Sound("resources/sounds/explosion.wav")
+        self.explosion.set_volume(0.25)
 
 
     def shot_lazer(self):
-        lazer = "resources/sounds/laser_shot_sound_lazer.wav"
-        self.setting.game.mixer.music.load(lazer)
-
         # Play the music
-        self.setting.game.mixer.music.play()
+        self.lazer.play()
+
+    
+    def destroy_ship(self):
+        self.explosion.play()
