@@ -69,7 +69,7 @@ class Setting():
         self.screen_rect = self.screen.get_rect()
 
         # Take image as input 
-        img = self.game.image.load('icon.bmp') 
+        img = self.game.image.load('icon.jpeg') 
         
         # Set image as icon 
         self.game.display.set_icon(img)
