@@ -101,6 +101,7 @@ class Game():
                 for alien in collided_aliens:
                     self.animation.add_explosion(alien.rect.left, alien.rect.top)
                 aliens.remove(collided_aliens)
+                bullets.remove(bullet)
                 aliens.add(Alien(self.setting, bullets))
                 
         
