@@ -16,6 +16,10 @@ class Setting():
         if config is not None and "bullet" in config:
             game_bullet_config = config.get('bullet', {})
         
+        game_specs_config = {}
+        if config is not None and "game_specs" in config:
+            game_specs_config = config.get('game_specs', {})
+
         # screen config
         self.screen_dimensions  = game_window_config.get('screen', [1200, 800])
         self.background_color   = game_window_config.get('background', [40, 40, 40])
@@ -28,17 +32,23 @@ class Setting():
         self.bullet_color        = game_bullet_config.get('color', [60, 60, 60])
         self.bullet_allowed      = game_bullet_config.get('allowed_number', 7)
 
+        self.sf_ship_lives      = game_specs_config.get('lives', 3)
+
         self.screen             = None
         self.game               = game
 
         ## load stars images
         star  = game.image.load('resources/images/star_01.bmp')
         score = game.image.load('resources/images/score_icon.bmp')
+        hp    = game.image.load('resources/images/heart.bmp')
+        ship  = game.image.load('resources/images/spaceship_icon.bmp')
 
-        self.score = game.transform.scale(score, (25, 25))
-        self.star  = game.transform.scale(star, (25, 25))
-        self.rect  = self.star.get_rect()
-        self.stars = []
+        self.score     = game.transform.scale(score, (25, 25))
+        self.star      = game.transform.scale(star, (25, 25))
+        self.hp_icon   = game.transform.scale(hp, (25, 25))
+        self.ship_icon = game.transform.scale(ship, (25, 40))
+        self.rect      = self.star.get_rect()
+        self.stars     = []
         self.game_score = 0
 
 
@@ -57,6 +67,12 @@ class Setting():
         self.screen = self.game.display.set_mode(self.screen_dimensions)
         self.game.display.set_caption(self.window_description)
         self.screen_rect = self.screen.get_rect()
+
+        # Take image as input 
+        img = self.game.image.load('icon.bmp') 
+        
+        # Set image as icon 
+        self.game.display.set_icon(img)
 
 
     def fill(self):
@@ -88,10 +104,32 @@ class Setting():
             self.stars = stars
 
     
-    def draw_game_info(self):
+    def draw_game_info(self, clock, ship):
         # draw score
         self.screen.blit(self.score, (10, 10))
         score = self.game.font.Font(None, 25).render(f"{self.game_score:.0f}", True, [250,250,250])
+        # draw hp
+        self.screen.blit(self.hp_icon, (10, 50))
+        hp = self.game.font.Font(None, 25).render(f"{ship.get_hp():.0f}", True, [250,250,250])
+        # draw ship lives
+        self.screen.blit(self.ship_icon, (10, 80))
+        lives = self.game.font.Font(None, 25).render(f"{self.sf_ship_lives:.0f}", True, [250,250,250])
 
         # Draw FPS text on the screen
         self.screen.blit(score, (40, 18))
+        self.screen.blit(hp, (40, 50))
+        self.screen.blit(lives, (43, 90))
+
+        # calculate FPS
+        self.calculate_fps(clock)
+
+
+
+
+    def calculate_fps(self, clock):
+        # Calculate FPS
+        fps = clock.get_fps()
+        fps_text = self.game.font.Font(None, 25).render(f"{fps:.0f}", True, [250,0,0])
+
+        # Draw FPS text on the screen
+        self.screen.blit(fps_text, (self.getScreenX() - 40, 10))

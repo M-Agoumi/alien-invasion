@@ -1,2 +1,3 @@
 # ignore cpython cache files
 src/__pycache__/*
+src/effect/__pycache__/*

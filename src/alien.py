@@ -16,7 +16,7 @@ class Alien(Sprite, Warship):
 
         """Initialize the alien and set its starting position."""
         super().__init__()
-        Warship.__init__(self, setting, 'resources/images/alien_1.bmp', 60, 70, 1)
+        Warship.__init__(self, setting, 'resources/images/alien_1.bmp', 60, 70, 10)
         self.setting = setting
         self.place_ship()
 
@@ -24,7 +24,7 @@ class Alien(Sprite, Warship):
 
         # Store the alien's exact position.
         self.x = float(self.rect.x)
-        self.last_firing_time = time.time()
+        self.last_firing_time = (time.time() - 3)
 
         if (random.getrandbits(1)):
             self.moving_right = True
@@ -43,11 +43,12 @@ class Alien(Sprite, Warship):
     def place_ship(self):
         # Start each new ship at a random point of the top of the screen.
         self.rect.centerx = random.randrange(0, self.setting.getScreenX())
-        self.rect.top  = -70
+        self.rect.top  = -100
 
     def fire(self):
         # fire a bullet if the alien ship isn't reloading
         # TODO: add more firing patterns
+        # TODO: debug missing bullets
         current_time = time.time()
         if ((current_time - self.last_firing_time) > 3):
             new_bullet = Bullet(self.setting, self.setting.screen, self, 0)
@@ -72,14 +73,14 @@ class Alien(Sprite, Warship):
             self.rect.centerx -= self.speed_factor
         
         # move downside toward the player
-        self.move_down += 5 * self.speed_factor
+        if (self.rect.top > 20):
+            self.speed_factor = 1
+        self.move_down += 10 * self.speed_factor
         if (self.move_down >= 100):
             self.rect.top += 1
             self.move_down = 0
 
-    def get_hp(self):
-        return self.hp
     
-    def set_hp(self, hp):
-        self.hp = hp
+    def update_hp(self, hp):
+        self.ship_hp -= hp
         return self

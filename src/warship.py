@@ -26,6 +26,14 @@ class Warship(ABC):
         pass
 
 
+    @abstractmethod
+    def update_hp(self):
+        pass
+
+
+    def get_hp(self):
+        return self.ship_hp
+
     def draw(self):
         """Draw the ship at its current location."""
         self.screen.blit(self.image, self.rect)
