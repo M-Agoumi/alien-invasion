@@ -1,7 +1,6 @@
 game_window:
   description: "Alien Invasion"
   background: [20, 20, 20]
-  screen: [1200, 800]
 
 bullet:
   speed_factor: 4

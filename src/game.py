@@ -1,4 +1,4 @@
-import pygame
+import pygame, os
 import time
 from sys import exit
 from pygame.sprite import Group
@@ -13,11 +13,15 @@ class Game():
     # class game, game container
 
     def __init__(self):
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
         # run an instance of the game
         pygame.init()
+
+        info = pygame.display.Info()
+        screen_width,screen_height = info.current_w,info.current_h
     
         self.setting = Setting(pygame)
-        self.setting.init_screen()
+        self.setting.init_screen(screen_width, screen_height)
         self.animation = Animation(self.setting)
 
     

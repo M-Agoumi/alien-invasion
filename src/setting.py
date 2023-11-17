@@ -20,8 +20,6 @@ class Setting():
         if config is not None and "game_specs" in config:
             game_specs_config = config.get('game_specs', {})
 
-        # screen config
-        self.screen_dimensions  = game_window_config.get('screen', [1200, 800])
         self.background_color   = game_window_config.get('background', [40, 40, 40])
         self.window_description = game_window_config.get('description', "Alien Invasion")
 
@@ -62,9 +60,9 @@ class Setting():
         return y
 
 
-    def init_screen(self):
-        """initiate new game window with current config"""
-        self.screen = self.game.display.set_mode(self.screen_dimensions)
+    def init_screen(self, width, height):
+        """initiate new game window in full screen"""
+        self.screen = self.game.display.set_mode((width, height), self.game.FULLSCREEN)
         self.game.display.set_caption(self.window_description)
         self.screen_rect = self.screen.get_rect()
 
