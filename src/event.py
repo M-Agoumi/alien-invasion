@@ -22,10 +22,10 @@ class Event():
     
 
     def check_keydown_events(self, event, ship, bullets):
-        if event.key == self.game.K_RIGHT:
+        if event.key == self.game.K_d or event.key == self.game.K_RIGHT:
             # Move the ship to the right.
             ship.moving_right = True
-        elif event.key == self.game.K_LEFT:
+        elif event.key == self.game.K_a or event.key == self.game.K_LEFT:
             # Move the ship to the left.
             ship.moving_left = True
         elif event.key == self.game.K_SPACE:
@@ -35,9 +35,9 @@ class Event():
     
 
     def check_keyup_events(self, event, ship):
-        if event.key == self.game.K_RIGHT:
+        if event.key == self.game.K_d or event.key == self.game.K_RIGHT:
             ship.moving_right = False
-        if event.key == self.game.K_LEFT:
+        if event.key == self.game.K_a or event.key == self.game.K_LEFT:
             ship.moving_left = False
 
     
