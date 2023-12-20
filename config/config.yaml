@@ -7,7 +7,7 @@ bullet:
   width: 3
   height: 15
   color: [200, 200, 200]
-  allowed_number: 6
+  allowed_number: 3
 
 game_specs:
   lives: 3

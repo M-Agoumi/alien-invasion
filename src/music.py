@@ -1,6 +1,5 @@
-
 # let's do the handling of our sounds here
-class Music():
+class Music:
 
     def __init__(self, setting):
         self.setting = setting
@@ -15,11 +14,9 @@ class Music():
         self.explosion = self.setting.game.mixer.Sound("resources/sounds/explosion.wav")
         self.explosion.set_volume(0.25)
 
-
     def shot_lazer(self):
         # Play the music
         self.lazer.play()
 
-    
     def destroy_ship(self):
         self.explosion.play()

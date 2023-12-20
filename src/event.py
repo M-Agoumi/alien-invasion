@@ -1,7 +1,16 @@
 import sys
 from src.bullet import Bullet
 
-class Event():
+
+def get_bullets_count(bullets):
+    total_bullets = 0
+    for bullet in bullets:
+        if bullet.is_friendly():
+            total_bullets += 1
+    return total_bullets
+
+
+class Event:
     # Handle game events (keyboard and mouse clicks)
 
     def __init__(self, game, setting, music):
@@ -16,10 +25,9 @@ class Event():
 
             elif event.type == self.game.KEYDOWN:
                 self.check_keydown_events(event, ship, bullets)
-            
+
             elif event.type == self.game.KEYUP:
                 self.check_keyup_events(event, ship)
-    
 
     def check_keydown_events(self, event, ship, bullets):
         if event.key == self.game.K_d or event.key == self.game.K_RIGHT:
@@ -32,7 +40,6 @@ class Event():
             self.fire_bullet(bullets, ship)
         elif event.key == self.game.K_q:
             sys.exit()
-    
 
     def check_keyup_events(self, event, ship):
         if event.key == self.game.K_d or event.key == self.game.K_RIGHT:
@@ -40,11 +47,10 @@ class Event():
         if event.key == self.game.K_a or event.key == self.game.K_LEFT:
             ship.moving_left = False
 
-    
     def fire_bullet(self, bullets, ship):
-        # TODO: enemy bullets are counted in the limit fix that :)
-        # TODO: play sound
-        if len(bullets) < self.setting.bullet_allowed:
-                new_bullet = Bullet(self.setting, self.setting.screen, ship)
-                bullets.add(new_bullet)
-                self.music.shot_lazer()
+        # Create a new bullet and add it to the bullets group.
+        total_bullets = get_bullets_count(bullets)
+        if total_bullets < self.setting.bullet_allowed:
+            new_bullet = Bullet(self.setting, self.setting.screen, ship)
+            bullets.add(new_bullet)
+            self.music.shot_lazer()
