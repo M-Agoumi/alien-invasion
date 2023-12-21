@@ -14,9 +14,15 @@ class Music:
         self.explosion = self.setting.game.mixer.Sound("resources/sounds/explosion.wav")
         self.explosion.set_volume(0.25)
 
+        self.warp = self.setting.game.mixer.Sound("resources/sounds/drop-out-warp.wav")
+        self.warp.set_volume(1)
+
     def shot_lazer(self):
         # Play the music
         self.lazer.play()
 
     def destroy_ship(self):
         self.explosion.play()
+
+    def warp_out(self):
+        self.warp.play()
