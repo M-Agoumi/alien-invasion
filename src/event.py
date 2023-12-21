@@ -38,6 +38,8 @@ class Event:
             ship.moving_left = True
         elif event.key == self.game.K_SPACE:
             self.fire_bullet(bullets, ship)
+        elif event.key == self.game.K_p:
+            self.setting.pause = not self.setting.pause
         elif event.key == self.game.K_q:
             sys.exit()
 

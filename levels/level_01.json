@@ -1,0 +1,107 @@
+{
+  "events": [
+    {
+      "type": "message",
+      "timestamp": 2000,
+      "content": "Level 1"
+    },
+    {
+      "type": "spawn",
+      "timestamp": 5500,
+      "content": [
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "random",
+          "level": 1,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "type": "spawn",
+      "timestamp": 7000,
+      "content": [
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "left",
+          "level": 1,
+          "speed": 1
+        },
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "right",
+          "level": 1,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "type": "spawn",
+      "timestamp": 12000,
+      "content": [
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "left",
+          "level": 1,
+          "speed": 1
+        },
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "right",
+          "level": 1,
+          "speed": 1
+        },
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "middle",
+          "level": 1,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "type": "spawn",
+      "timestamp": 20000,
+      "content": [
+        {
+          "ship": "gravion",
+          "type": "enemy",
+          "position": "left",
+          "level": 1,
+          "speed": 1
+        },
+        {
+          "ship": "gravion",
+          "position": "left",
+          "type": "enemy",
+          "level": 1,
+          "speed": 1
+        },
+        {
+          "ship": "gravion",
+          "position": "right",
+          "type": "enemy",
+          "level": 1,
+          "speed": 1
+        },
+        {
+          "ship": "gravion",
+          "position": "middle",
+          "level": 1,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "type": "end",
+      "timestamp": 20000,
+      "content": "Level 1 Completed!"
+    }
+  ]
+}

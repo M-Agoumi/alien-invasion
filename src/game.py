@@ -2,10 +2,13 @@ import pygame, os
 import time
 from sys import exit
 from pygame.sprite import Group
+
+from src.drawer import Drawer
+from src.level.level import Level
+from src.parser import Parser
 from src.setting import Setting
 from src.sf_ship import SFship
 from src.event import Event
-from src.alien import Alien
 from src.music import Music
 from src.animation import Animation
 
@@ -14,31 +17,47 @@ class Game:
     # class game, game container
 
     def __init__(self):
+        self.level = None
         os.environ['SDL_VIDEO_CENTERED'] = '1'
+        os.environ['PYGAME_DETECT_AVX2'] = '1'
         # run an instance of the game
         pygame.init()
 
         info = pygame.display.Info()
         screen_width, screen_height = info.current_w, info.current_h
-
-        self.setting = Setting(pygame)
+        parser = Parser()
+        self.setting = Setting(pygame, parser, self)
         self.setting.init_screen(screen_width, screen_height)
         self.animation = Animation(self.setting)
+        self.game_was_paused = False
+        self.music = None
 
     def run(self):
-        (ship, event, bullets, clock, aliens, music) = self.init_objects()
+        (ship, event, bullets, clock, aliens, music, level, drawer) = self.init_objects()
 
         # Start the main loop for the game.
         while True:
             clock.tick(165)  # Limit the frame rate to 165 FPS (my monitor refresh rate)
+            # Make the most recently drawn screen visible.
+            pygame.display.flip()
+
             # Watch for keyboard and mouse events.
             event.check_events(ship, bullets)
+
+            if self.setting.pause:
+                self.setting.pause_game(drawer)
+                self.game_was_paused = True
+                continue
+            elif self.game_was_paused:
+                self.game_was_paused = False
+                level.pause_time_stop()
 
             # Redraw the screen during each pass through the loop.
             self.update_screen(ship, bullets, aliens)
 
             # update ships
             ship.update()
+            level.play_level()
             aliens.update()  # TODO: free out of screen ships / generate more ships
             self.animation.draw_all()
 
@@ -46,18 +65,16 @@ class Game:
             self.update_bullets(bullets, aliens, ship, music)
 
             # draw game score, and lives...
-            self.setting.draw_game_info(clock, ship)
-
-            # Make the most recently drawn screen visible.
-            pygame.display.flip()
+            drawer.draw_game_info(clock, ship)
 
     def init_objects(self):
         # Make a ship.
         ship = SFship(self.setting)
 
         # music class init
-        music = Music(self.setting)
-        event = Event(pygame, self.setting, music)
+        self.music = Music(self.setting)
+
+        event = Event(pygame, self.setting, self.music)
 
         # Make a group to store bullets in.
         bullets = Group()
@@ -67,10 +84,14 @@ class Game:
 
         # create an alien
         aliens = Group()
-        alien = Alien(self.setting, bullets)
-        aliens.add(alien)
 
-        return ship, event, bullets, clock, aliens, music
+        # create drawer
+        drawer = Drawer(pygame, self.setting)
+        # create a level object
+        level = Level(self.setting, drawer, bullets, aliens)
+        self.level = level
+
+        return ship, event, bullets, clock, aliens, self.music, level, drawer
 
     def update_screen(self, ship, bullets, aliens):
         # update game screen
@@ -103,7 +124,6 @@ class Game:
                     self.animation.add_explosion(alien.rect.left, alien.rect.top)
                 aliens.remove(collided_aliens)
                 bullets.remove(bullet)
-                aliens.add(Alien(self.setting, bullets))
 
         # check for collision with our spaceship
         for bullet in bullets:

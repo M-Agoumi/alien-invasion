@@ -1,14 +1,14 @@
-from src.parse_config import parse_config
 import random
 
 
 class Setting:
     """setting class to store all settings and update them"""
 
-    def __init__(self, game):
+    def __init__(self, game, parser, my_game):
         """parse config file, and put default values for missing infos"""
         """ return screen for drawing, and background color"""
-        config = parse_config();
+        self.parser = parser
+        config = parser.parse_config()
         game_window_config = {}
         if config is not None and "game_window" in config:
             game_window_config = config.get('game_window', {})
@@ -49,6 +49,9 @@ class Setting:
         self.rect = self.star.get_rect()
         self.stars = []
         self.game_score = 0
+
+        self.pause = False
+        self.my_game = my_game
 
     def get_screen_x(self):
         _, _, x, _ = self.screen_rect
@@ -123,3 +126,8 @@ class Setting:
 
         # Draw FPS text on the screen
         self.screen.blit(fps_text, (self.get_screen_x() - 40, 10))
+
+    def pause_game(self, drawer):
+        drawer.draw_pause()
+        self.my_game.level.pause_time_start()
+
