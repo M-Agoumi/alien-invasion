@@ -1,3 +1,4 @@
-from src.run_game import run_game
+from src.main import main
 
-run_game()
+main()
+

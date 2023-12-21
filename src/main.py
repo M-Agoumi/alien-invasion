@@ -1,7 +1,7 @@
 from src.game import Game
 
 
-def run_game():
+def main():
     # Initialize game and create a screen object.
     game = Game()
 
