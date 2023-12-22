@@ -24,10 +24,10 @@ class Game:
         pygame.init()
 
         info = pygame.display.Info()
-        screen_width, screen_height = info.current_w, info.current_h
+        self.screen_width, self.screen_height = info.current_w, info.current_h
         parser = Parser()
         self.setting = Setting(pygame, parser, self)
-        self.setting.init_screen(screen_width, screen_height)
+        self.setting.init_screen(self.screen_width, self.screen_height)
         self.animation = Animation(self.setting)
         self.game_was_paused = False
         self.music = None

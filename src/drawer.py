@@ -28,7 +28,7 @@ class Drawer:
         self.screen.blit(lives, (43, 90))
 
         # Draw messages
-        self.draw_message()
+        self.draw_messages(self.setting.my_game.screen_width, self.setting.my_game.screen_height)
 
         # calculate FPS
         self.calculate_fps(clock)
@@ -49,12 +49,30 @@ class Drawer:
         for message in self.messages:
             message["timestamp"] += paused_time
 
-    def draw_message(self):
+    # def draw_messages(self):
+    #     for message in self.messages:
+    #         if (time.time() * 1000) - message["timestamp"] > 3000:
+    #             self.messages.remove(message)
+    #         self.draw_text_with_outline(message["message"], 125, (800, 500), (250, 250, 250),
+    #                                     (0, 0, 255))
+    #
+
+    def draw_messages(self, screen_width, screen_height):
+        """ Draw messages in the center of the screen """
         for message in self.messages:
             if (time.time() * 1000) - message["timestamp"] > 3000:
                 self.messages.remove(message)
-            self.draw_text_with_outline(message["message"], 125, (800, 500), (250, 250, 250),
-                                        (0, 0, 255))
+            # Calculate the position to center the text on the screen
+            text_width, text_height = self.get_text_dimensions(message["message"], 125)
+            x = (screen_width - text_width) // 2
+            y = (screen_height - text_height) // 2
+            self.draw_text_with_outline(message["message"], 125, (x, y), (250, 250, 250), (0, 0, 255))
+
+    def get_text_dimensions(self, text, font_size):
+        """ Get the dimensions of the text """
+        font = self.game.font.Font(None, font_size)
+        text_surface = font.render(text, True, (250, 250, 250))
+        return text_surface.get_width(), text_surface.get_height()
 
     def draw_text_with_outline(self, text, font_size, position, text_color, outline_color, background_color=None,
                                border_radius=0):
