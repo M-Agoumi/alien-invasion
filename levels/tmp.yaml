@@ -1,0 +1,41 @@
+Level 1:
+  name: Novice Invasion
+  ships:
+    Gravion Scout
+    Nebula Marauder
+    Celestial Interceptor
+    Cosmic Mariner
+    Astro Raider
+Level 2:
+  name: Stellar Onslaught
+  ships:
+      Quasar Striker
+      Orion Onyx
+      Eclipse Enforcer
+      Galaxy Fury
+      Solar Serpent
+
+Level 3:
+  name: Galactic Onslaught
+  ships:
+    Quantum Quasar
+    Starborn Ravager
+    Void Vortex
+    Astroblitz Vanguard
+    Nebula Nemesis
+Level 4:
+  name: Intergalactic Assault
+  ships:
+    Hypernova Harbinger
+    Darkmatter Dominator
+    Astral Annihilator
+    Xenon Xiphos
+    Infinity Invader
+Level 5:
+  name: Extraterrestrial Armageddon
+  ships:
+    Omega Obliterator
+    Nebula Nihilator
+    Quantum Quake
+    Blackhole Behemoth
+    Celestial Cataclysm
