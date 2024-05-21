@@ -3,6 +3,7 @@ class Music:
 
     def __init__(self, setting):
         self.setting = setting
+        self.setting.game.mixer.init()
         background_music = self.setting.game.mixer.Sound('resources/sounds/moonlightsonataspace.ogg')
         background_music.set_volume(0.5)
         # Start playing the background music on loop
